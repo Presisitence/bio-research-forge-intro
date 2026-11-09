@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Bio Research Forge：面向生命科学的 Agent Plugin。12 个技能 + 3 个本地 MCP，把研究设计、公共数据查询、组学分析、统计、出图、写作、可复现性与独立审查串成一条可追踪的工作流。"><meta name="theme-color" content="#f8faff"><meta property="og:type" content="website"><meta property="og:title" content="Bio Research Forge · 生命科学工作台"><meta property="og:description" content="12 个技能 + 3 个本地 MCP：从研究设计、公共数据查询到本地出图与独立审查。"><meta property="og:image" content="assets/overview.png"><title>Bio Research Forge · 生命科学工作台</title>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Bio Research Forge：面向生命科学的 Agent Plugin，植物、微生物、医学与临床共用一套流程。12 个技能 + 3 个本地 MCP，把研究设计、公共数据查询、组学分析、统计、出图、写作、可复现性与独立审查串成一条可追踪的工作流。"><meta name="theme-color" content="#f8faff"><meta property="og:type" content="website"><meta property="og:title" content="Bio Research Forge · 生命科学工作台"><meta property="og:description" content="12 个技能 + 3 个本地 MCP：植物 FLC 与医学 TP53 两个 case，从公共数据查询到本地出图与独立审查。"><meta property="og:image" content="assets/overview.png"><title>Bio Research Forge · 生命科学工作台</title>
 <style>
 :root{--ink:#14243e;--muted:#617087;--blue:#275de7;--line:#dce4f1;--paper:#f8faff}
 *{box-sizing:border-box}
@@ -79,6 +79,9 @@ dialog p{text-align:center;font-size:14px;margin:8px}
 .evidence-table th{text-align:left;font-weight:650;color:var(--ink);background:#f2f6ff;padding:10px 14px;font-size:13px}
 .evidence-table td{padding:10px 14px;border-top:1px solid var(--line);color:var(--muted);vertical-align:top}
 .evidence-table td:first-child{color:var(--ink);font-weight:600;white-space:nowrap}
+.evidence-table code{background:#eef3ff;border-radius:5px;padding:1px 5px;font-size:12px;color:#1d3a7a;white-space:nowrap}
+.evidence-table td{min-width:0}
+.case h4{font-size:16px;margin:32px 0 6px}
 .ledger{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:18px 0 6px}
 .ledger div{background:white;border:1px solid var(--line);border-radius:12px;padding:18px}
 .ledger strong{display:block;font-size:26px;color:var(--blue);line-height:1.35}
@@ -118,10 +121,10 @@ p code{background:#eef3ff;border-radius:5px;padding:1px 6px;font-size:13px;color
 <div class="wrap"><div class="hero"><div class="intro"><div>
 <div class="kicker">Bio Research Forge · MiniMax Code 社区插件 · v0.1.0</div>
 <h1><span>从一句问题，</span><span>到一份能交的结果。</span></h1>
-<p class="lead">面向生命科学的 Agent Plugins 1.0 插件：12 个技能 + 3 个本地 MCP，把研究设计、公共数据查询、组学分析、统计、出图、写作、可复现性和独立审查，串成一条有边界、可追踪的工作流。</p>
+<p class="lead">面向生命科学——植物、微生物、医学与临床——的 Agent Plugins 1.0 插件：12 个技能 + 3 个本地 MCP，把研究设计、公共数据查询、组学分析、统计、出图、写作、可复现性和独立审查，串成一条有边界、可追踪的工作流。</p>
 <p class="lead">公共查询走只读白名单，每次回包都带来源 URL 与检索时间；本地表格不上传，R 在本机出图，缺依赖只报状态、不崩溃。</p>
 <div class="actions"><a class="btn" href="#features">看看它怎么干活 ↓</a><a class="btn secondary" href="https://github.com/Presisitence/bio-research-forge" target="_blank" rel="noopener">GitHub 开源仓库 ↗</a></div>
-</div><figure class="hero-screen"><button class="zoom" aria-label="放大案例总览"><img src="assets/overview.png" alt="Bio Research Forge 一个案例的 5 张图总览"></button><figcaption>一个案例跑完：7 个真实查询 · 5 张图 · 15 个产物文件。</figcaption></figure></div>
+</div><figure class="hero-screen"><button class="zoom" aria-label="放大案例总览"><img src="assets/overview.png" alt="Bio Research Forge 一个案例的 5 张图总览"></button><figcaption>一个植物 case 跑完：7 个真实查询 · 5 张图 · 15 个产物文件。</figcaption></figure></div>
 <div class="facts"><span><strong>12 个技能</strong> · 4 个阶段 · 一个入口</span><span><strong>7 个只读数据源</strong> · 每个都带来源与检索时间</span><span><strong>0 上传</strong> · 表格与图片留在本机</span></div>
 </div></div>
 
@@ -139,31 +142,50 @@ p code{background:#eef3ff;border-radius:5px;padding:1px 6px;font-size:13px;color
 <p class="caption-note">每个技能是一个独立的 SKILL.md 目录，可以单独调用，也可以由总控串起来。</p>
 </div></section>
 
-<section id="case" class="case"><div class="wrap"><h2>一个 case：从设计门到审查报告。</h2><p class="section-lead">问题很普通：拟南芥春化处理下，FLC 通路的表达变了没有？示例表达表是模拟数据，7 个公共查询是真实执行；结果、出处和限制都写在同一页上。</p>
+<section id="case" class="case"><div class="wrap"><h2>两个 case，同一套流程。</h2><p class="section-lead">一个植物（拟南芥春化里的 FLC），一个医学（人的 TP53 轴，肿瘤 vs 正常）。示例表达表是模拟数据，公共查询是真实执行；下面把查询语句、返回值、出处和限制都摊开写。</p>
+<h3>Case 1 · 植物：春化处理下的 FLC 通路</h3>
 <div class="showcase">
 <figure><button class="zoom" aria-label="放大火山图"><img src="assets/volcano.png" alt="差异表达火山图：FLC 下调，FT、SOC1 上调" loading="lazy"></button><figcaption>火山图：FLC −2.63、FT +2.21、SOC1 +1.97；阈值 padj &lt; 0.05、|log2FC| ≥ 1。</figcaption></figure>
 <figure><button class="zoom" aria-label="放大热图"><img src="assets/heatmap.png" alt="Top-30 基因热图：低温组 FLC、FRI、SVP、MAF4 走低" loading="lazy"></button><figcaption>Top-30 基因热图（行 z-score）：FLC / FRI / SVP / MAF4 在低温组整体走低。</figcaption></figure>
 </div>
-<h3>7 个数据源，每个都留下出处</h3>
+<h4>7 个查询，都留了具体语句</h4>
 <table class="evidence-table">
-<thead><tr><th>数据源</th><th>查询对象</th><th>拿到什么</th></tr></thead>
+<thead><tr><th>数据源</th><th>查询语句（示例）</th><th>返回要点</th></tr></thead>
 <tbody>
-<tr><td>UniProt</td><td>FLC · A. thaliana</td><td>Q9S7Q7，196 aa；MADS-box 1–61、K-box 80–170、NLS 8–15</td></tr>
-<tr><td>InterPro</td><td>Q9S7Q7</td><td>5 个蛋白条目；实验结构 0 个</td></tr>
-<tr><td>AlphaFold</td><td>Q9S7Q7</td><td>AF-Q9S7Q7-F1 v6；mean pLDDT 79.38（预测结构，不是实验证据）</td></tr>
-<tr><td>NCBI Gene</td><td>FLC · A. thaliana</td><td>147 条记录；限流 3 次/秒</td></tr>
-<tr><td>Europe PMC</td><td>FLC 春化相关文献</td><td>2,291 篇，取前 5 篇原文线索</td></tr>
-<tr><td>JASPAR</td><td>MADS 基序</td><td>37 个矩阵；MA0005 AG、MA0585 AGL1</td></tr>
-<tr><td>STRING</td><td>Q9S7Q7 · 3702</td><td>SVP 0.932、FRI 0.830、FT 0.824（分数含文本挖掘，不等于物理互作）</td></tr>
+<tr><td>UniProt</td><td><code>gene:FLC AND organism_id:3702 AND reviewed:true</code></td><td>Q9S7Q7，196 aa；MADS-box 1–61、K-box 80–170、NLS 8–15</td></tr>
+<tr><td>InterPro</td><td><code>protein/uniprot/Q9S7Q7</code></td><td>5 个蛋白条目；实验结构 0 个</td></tr>
+<tr><td>AlphaFold</td><td><code>prediction/Q9S7Q7</code></td><td>AF-Q9S7Q7-F1 v6；mean pLDDT 79.38（预测结构，不是实验证据）</td></tr>
+<tr><td>NCBI Gene</td><td><code>db=gene；FLC AND Arabidopsis thaliana</code></td><td>147 条记录；限流 3 次/秒</td></tr>
+<tr><td>Europe PMC</td><td><code>FLC AND vernalization</code></td><td>2,291 篇，取前 5 篇 PMID 作线索（未读原文）</td></tr>
+<tr><td>JASPAR</td><td><code>matrix/?search=MADS</code></td><td>37 个矩阵；MA0005 AG、MA0585 AGL1</td></tr>
+<tr><td>STRING</td><td><code>network?identifiers=Q9S7Q7&amp;species=3702</code></td><td>SVP 0.932、FRI 0.830、FT 0.824（分数含文本挖掘，不等于物理互作）</td></tr>
 </tbody></table>
 <p class="caption-note">还有一次没跑通：Ensembl lookup-symbol 的适配层没有暴露 symbol 参数，本轮植物注释未覆盖——这条边界也写进 Review 报告，而不是悄悄跳过。</p>
+<h3>Case 2 · 医学：肿瘤里的 TP53 轴</h3>
+<div class="showcase">
+<figure><button class="zoom" aria-label="放大医学火山图"><img src="assets/medical-volcano.png" alt="TP53 轴差异表达火山图：TP53、CDKN1A 下调，MKI67、PCNA、EGFR 上调" loading="lazy"></button><figcaption>火山图：TP53 −1.94、CDKN1A −1.79、MKI67 +2.46；用的还是同一套阈值。</figcaption></figure>
+<figure><button class="zoom" aria-label="放大医学箱线图"><img src="assets/medical-boxplot.png" alt="TP53、CDKN1A、MKI67 在正常与肿瘤组的箱线图" loading="lazy"></button><figcaption>箱线图：TP53 / CDKN1A 在肿瘤组下移，MKI67 上移（n = 6 + 6，示例数据）。</figcaption></figure>
+</div>
+<h4>同一组 MCP，换成人的数据和文献</h4>
+<table class="evidence-table">
+<thead><tr><th>数据源</th><th>查询语句（示例）</th><th>返回要点</th></tr></thead>
+<tbody>
+<tr><td>UniProt</td><td><code>gene:TP53 AND organism_id:9606 AND reviewed:true</code></td><td>P04637，393 aa，P53_HUMAN（reviewed）</td></tr>
+<tr><td>InterPro</td><td><code>protein/uniprot/P04637</code></td><td>9 个蛋白条目；247 个已解析结构；GO 含 DNA binding、apoptosis</td></tr>
+<tr><td>AlphaFold</td><td><code>prediction/P04637</code></td><td>AF-P04637-F1 v6；mean pLDDT 75.06（预测结构）</td></tr>
+<tr><td>NCBI Gene</td><td><code>db=gene；TP53 AND Homo sapiens</code></td><td>2,901 条记录；限流 3 次/秒</td></tr>
+<tr><td>Europe PMC</td><td><code>TP53 AND cancer</code></td><td>145,474 条命中；取前 5 篇 PMID 作线索（未读原文）</td></tr>
+<tr><td>JASPAR</td><td><code>matrix/?search=p53</code></td><td>13 个矩阵；MA0106.1/.2/.3 = TP53</td></tr>
+<tr><td>STRING</td><td><code>network?identifiers=P04637&amp;species=9606</code></td><td>CSNK2A1 / SIRT1 / STUB1 / AURKA 0.999（含文本挖掘）</td></tr>
+</tbody></table>
+<p class="caption-note">医学 case 的边界同样写进 Review：表达下降不等于 TP53 突变或功能丧失，突变状态、IHC、测序都还没做。临床数据（患者标识、病历、影像）不进公共查询，插件也不做标识映射。</p>
 <h3>产物账本</h3>
 <div class="ledger">
-<div><strong>15</strong><span>个产物文件：5 种图 × (PNG + PDF + plot-data.csv)</span></div>
-<div><strong>7</strong><span>项 Review 检查：4 项通过，3 项亮黄灯并写明原因</span></div>
-<div><strong>22</strong><span>条 SHA-256：7 个输入 + 15 个输出，manifest 可复核</span></div>
+<div><strong>21</strong><span>个产物文件：7 种图 × (PNG + PDF + plot-data.csv)</span></div>
+<div><strong>14</strong><span>项 Review 检查：两个 case 各 7 项，黄灯都写明原因</span></div>
+<div><strong>32</strong><span>条 SHA-256：两份 manifest，输入输出逐条可复核</span></div>
 </div>
-<p class="caption-note">Review 的黄灯是主动写出来的：n = 4 偏少、引用未读原文、富集分析缺少背景集；模拟数据与 padj 的正态近似也在报告第一段就声明。缺什么比多什么更难写，也更值钱。</p>
+<p class="caption-note">黄灯是主动写出来的：样本量偏小、引用未读原文、富集与互作含文本挖掘、表达变化不等于功能验证；模拟数据与 padj 的正态近似也在报告第一段就声明。缺什么比多什么更难写，也更值钱。</p>
 </div></section>
 
 <section id="install"><div class="wrap"><div class="deployment"><div><h2>装进 MiniMax Code，<br>两步就能跑。</h2><p class="section-lead">插件是 Agent Plugins 1.0 的一个目录：plugin.json + 12 个 skills + 3 个 MCP。它不绑定某个客户端，MCP 走 stdio，任何支持 MCP 的宿主都能接。</p>
@@ -186,7 +208,7 @@ Rscript -e 'install.packages(
 <a href="https://github.com/MiniMax-AI/MiniMax-Code-Plugins/tree/main/plugins/Presisitence/bio-research-forge" target="_blank" rel="noopener">社区仓库插件目录 ↗</a>
 </div></div></div></section>
 
-<section id="gallery"><div class="wrap"><div class="gallery-heading"><h2>五张图，一张账本。</h2><small>6 张素材 · 点击图片放大</small></div><p class="section-lead">同一个案例的五个视角：差异表达、样本结构、基因模式、代表基因、功能富集。全部由本机 R 渲染，示例数据（模拟）。</p>
+<section id="gallery"><div class="wrap"><div class="gallery-heading"><h2>七张图，两个 case。</h2><small>8 张素材 · 点击图片放大</small></div><p class="section-lead">植物 case 的五个视角（差异表达、样本结构、基因模式、代表基因、功能富集），加上医学 case 的两张：差异表达与代表基因。全部由本机 R 渲染，示例数据（模拟）。</p>
 <div class="gallery">
 <figure><button class="zoom" aria-label="放大案例总览"><img src="assets/overview.png" alt="案例总览：5 张图与账本" loading="lazy"></button><figcaption>总览：5 张图、7 个数据源、15 个产物。</figcaption></figure>
 <figure><button class="zoom" aria-label="放大火山图"><img src="assets/volcano.png" alt="差异表达火山图" loading="lazy"></button><figcaption>火山图：60 个基因的差异表达。</figcaption></figure>
@@ -194,10 +216,13 @@ Rscript -e 'install.packages(
 <figure><button class="zoom" aria-label="放大 PCA"><img src="assets/pca.png" alt="样本级 PCA" loading="lazy"></button><figcaption>PCA：8 个样本，PC1 解释 75.0% 方差。</figcaption></figure>
 <figure><button class="zoom" aria-label="放大箱线图"><img src="assets/boxplot.png" alt="代表基因表达箱线图" loading="lazy"></button><figcaption>箱线图：FLC 下降，FT / SOC1 上升。</figcaption></figure>
 <figure><button class="zoom" aria-label="放大富集气泡图"><img src="assets/enrichment.png" alt="功能富集气泡图" loading="lazy"></button><figcaption>富集气泡图：春化响应居首。</figcaption></figure>
+<figure><button class="zoom" aria-label="放大医学火山图"><img src="assets/medical-volcano.png" alt="医学差异表达火山图" loading="lazy"></button><figcaption>火山图（医学）：TP53 轴的整体位移。</figcaption></figure>
+<figure><button class="zoom" aria-label="放大医学箱线图"><img src="assets/medical-boxplot.png" alt="医学代表基因箱线图" loading="lazy"></button><figcaption>箱线图（医学）：TP53 / CDKN1A 下移，MKI67 上移。</figcaption></figure>
 </div></div></section>
 
 <section><div class="wrap"><h2>开始之前，你可能想知道。</h2>
-<details open><summary>这些图是真实数据吗？</summary><p>图中的表达表是模拟数据，用来演示完整流程；7 个公共数据查询是真实执行的，带来源 URL 与检索时间。页面上所有材料都标注「示例数据（模拟）」，没有使用任何未发表研究数据。</p></details>
+<details open><summary>这些图是真实数据吗？</summary><p>图中的表达表是模拟数据，用来演示完整流程；两个 case 的公共数据查询都是真实执行的，带来源 URL 与检索时间。页面上所有材料都标注「示例数据（模拟）」，没有使用任何未发表研究数据。</p></details>
+<details><summary>医学和临床数据也能用吗？</summary><p>能。人的 TP53 和拟南芥的 FLC 走的是同一组白名单接口：UniProt、InterPro、AlphaFold、NCBI、Europe PMC、JASPAR、STRING，换掉的只是查询串和物种编号。临床数据（患者标识、病历、影像）不进入公共查询，本地表也不上传，插件不做标识映射。</p></details>
 <details><summary>一定要装 R 吗？</summary><p>只有本地出图需要 R 和 jsonlite / ggplot2 / pheatmap / ggrepel 四个包。没装时状态接口会返回缺失清单，公共查询和文本类技能照常可用。</p></details>
 <details><summary>数据会被上传吗？</summary><p>不会。表达矩阵在本机读取、在本机渲染，输出也落在本机目录；插件没有遥测，查询白名单只放行公开数据库域名，任意 URL 和本地文件读取都会被拦截。</p></details>
 <details><summary>能在 MiniMax Code 之外用吗？</summary><p>可以。它是 Agent Plugins 1.0 + MCP 的组合，MCP 通过 stdio 提供服务，不绑定特定客户端；换宿主只需要重新挂载 3 个 MCP 服务。</p></details>
@@ -205,6 +230,6 @@ Rscript -e 'install.packages(
 <div class="actions" style="margin-top:32px"><a class="btn" href="https://github.com/Presisitence/bio-research-forge" target="_blank" rel="noopener">前往开源仓库 ↗</a><a class="btn secondary" href="#">回到顶部 ↑</a></div>
 </div></section>
 </main>
-<footer><div class="wrap footer-row"><span>Bio Research Forge · MiniMax Code 社区插件 · AGPL-3.0-or-later</span><span>示例数据（模拟）· 公共查询 2026-11-09 执行 · 功能以实际安装版本与配置为准</span></div></footer>
+<footer><div class="wrap footer-row"><span>Bio Research Forge · MiniMax Code 社区插件 · AGPL-3.0-or-later</span><span>示例数据（模拟）· 两个 case（植物 / 医学）· 公共查询 2026-11-09 执行 · 功能以实际安装版本与配置为准</span></div></footer>
 <dialog id="viewer"><button aria-label="关闭大图">关闭 ×</button><img alt=""><p></p><div class="close-hint">按 Esc 或点击图片外侧关闭</div></dialog>
 <script>const viewer=document.querySelector('#viewer');document.querySelectorAll('.zoom').forEach(button=>button.addEventListener('click',()=>{const img=button.querySelector('img');viewer.querySelector('img').src=img.src;viewer.querySelector('img').alt=img.alt;viewer.querySelector('p').textContent=img.alt;viewer.showModal()}));viewer.querySelector('button').addEventListener('click',()=>viewer.close());viewer.addEventListener('click',event=>{if(event.target===viewer)viewer.close()});</script></body></html>
