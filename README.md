@@ -4,7 +4,7 @@
 
 **在线地址：https://presisitence.github.io/bio-research-forge-intro/**
 
-页面用两个 case 说明能力：植物（拟南芥春化 FLC 通路）和医学（人 TP53 轴，肿瘤 vs 正常）。两个 case 的公共查询都是真实执行的，示例表达表为模拟数据。
+页面用三个 case 说明能力：植物（拟南芥春化 FLC 通路）、医学（人 TP53 轴，肿瘤 vs 正常）、微生物（16S 属水平，健康 vs 代谢综合征）。三个 case 的公共查询都是真实执行的，示例数据表为模拟数据。
 
 ## 打开方式
 
@@ -23,7 +23,9 @@ bio-research-forge-intro/
 │   ├── boxplot.png       代表基因箱线图（植物）
 │   ├── enrichment.png    功能富集气泡图（植物）
 │   ├── medical-volcano.png  火山图（医学，TP53 轴）
-│   └── medical-boxplot.png  代表基因箱线图（医学）
+│   ├── medical-boxplot.png  代表基因箱线图（医学）
+│   ├── micro-pca.png     样本 PCA（微生物，12 样本 × 40 属）
+│   └── micro-boxplot.png 代表属丰度箱线图（微生物）
 └── preview/              渲染核对用的截图（已 gitignore，可删）
 ```
 
@@ -46,8 +48,9 @@ python -m http.server 8080
 
 - 文案：直接改 `index.html`，各节用 `<section id="...">` 分开（能力 / 案例 / 安装 / 图集 / FAQ）。
 - 换图：同名覆盖 `assets/*.png`，比例保持 2100×1650 或 1800×1500 最稳（横向图）。
-- 配图来源：植物 5 张在 `mcode-case/case2/out/`，医学 2 张在 `mcode-case/case3/out/`；示例数据（模拟），公共查询为 2026-11-09 真实执行。
-- Review 报告：`mcode-case/case2/review-report.md`、`mcode-case/case3/review-report.md`；manifest 在各自目录下。
+- 配图来源：植物 5 张在 `mcode-case/case2/out/`，医学 2 张在 `mcode-case/case3/out/`，微生物 2 张在 `mcode-case/case4/out/`；示例数据（模拟），公共查询为 2026-11-09 真实执行。
+- Review 报告：`mcode-case/case2|case3|case4/review-report.md`；manifest 在各自目录下。
+- 已知小瑕疵：微生物箱线图的纵轴沿用出图接口默认标签 `Expression`，数值实为相对丰度（%）；图注已写明。
 - 发布：改完执行 `git add -A && git commit -m "update" && git push`，Pages 自动更新。
 
 ## 声明

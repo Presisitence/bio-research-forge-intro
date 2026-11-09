@@ -142,7 +142,7 @@ p code{background:#eef3ff;border-radius:5px;padding:1px 6px;font-size:13px;color
 <p class="caption-note">每个技能是一个独立的 SKILL.md 目录，可以单独调用，也可以由总控串起来。</p>
 </div></section>
 
-<section id="case" class="case"><div class="wrap"><h2>两个 case，同一套流程。</h2><p class="section-lead">一个植物（拟南芥春化里的 FLC），一个医学（人的 TP53 轴，肿瘤 vs 正常）。示例表达表是模拟数据，公共查询是真实执行；下面把查询语句、返回值、出处和限制都摊开写。</p>
+<section id="case" class="case"><div class="wrap"><h2>三个 case，同一套流程。</h2><p class="section-lead">植物（拟南芥春化里的 FLC）、医学（人的 TP53 轴，肿瘤 vs 正常）、微生物（16S 属水平，健康 vs 代谢综合征）。示例数据是模拟的，公共查询是真实执行的；下面把查询语句、返回值、出处和限制都摊开写。</p>
 <h3>Case 1 · 植物：春化处理下的 FLC 通路</h3>
 <div class="showcase">
 <figure><button class="zoom" aria-label="放大火山图"><img src="assets/volcano.png" alt="差异表达火山图：FLC 下调，FT、SOC1 上调" loading="lazy"></button><figcaption>火山图：FLC −2.63、FT +2.21、SOC1 +1.97；阈值 padj &lt; 0.05、|log2FC| ≥ 1。</figcaption></figure>
@@ -179,13 +179,27 @@ p code{background:#eef3ff;border-radius:5px;padding:1px 6px;font-size:13px;color
 <tr><td>STRING</td><td><code>network?identifiers=P04637&amp;species=9606</code></td><td>CSNK2A1 / SIRT1 / STUB1 / AURKA 0.999（含文本挖掘）</td></tr>
 </tbody></table>
 <p class="caption-note">医学 case 的边界同样写进 Review：表达下降不等于 TP53 突变或功能丧失，突变状态、IHC、测序都还没做。临床数据（患者标识、病历、影像）不进公共查询，插件也不做标识映射。</p>
+<h3>Case 3 · 微生物：16S 属水平，健康 vs 代谢综合征</h3>
+<div class="showcase">
+<figure><button class="zoom" aria-label="放大微生物 PCA"><img src="assets/micro-pca.png" alt="微生物样本 PCA：健康组与 MetS 组沿 PC1 分开" loading="lazy"></button><figcaption>PCA：12 个样本、40 个属；PC1 解释 44.6% 方差，两组分开。</figcaption></figure>
+<figure><button class="zoom" aria-label="放大微生物箱线图"><img src="assets/micro-boxplot.png" alt="三个代表属在健康与 MetS 组的相对丰度箱线图" loading="lazy"></button><figcaption>箱线图：Akkermansia / Faecalibacterium 在 MetS 组下降，Klebsiella 上升；纵轴沿用接口默认标签，数值是相对丰度（%）。</figcaption></figure>
+</div>
+<h4>丰度表就是矩阵，换的是列名和标签</h4>
+<table class="evidence-table">
+<thead><tr><th>输入 / 查询</th><th>这一版怎么用</th><th>拿到什么</th></tr></thead>
+<tbody>
+<tr><td>本地表</td><td><code>matrix.csv：taxon × sample 相对丰度（%）</code></td><td>40 个属 × 12 个样本；PCA 与箱线图读的是同一张表</td></tr>
+<tr><td>Europe PMC</td><td><code>"Akkermansia muciniphila" AND "metabolic syndrome"</code></td><td>4,026 条命中；取前 5 条 PMID 作线索（未读原文）</td></tr>
+<tr><td>白名单边界</td><td><code>没有微生物组库接口</code></td><td>不硬凑 Qiime2 / SILVA；注释与差异模型自己跑，插件把输入、出图、边界写清楚</td></tr>
+</tbody></table>
+<p class="caption-note">微生物 case 的边界同样写进 Review：相对丰度有组成型约束，属水平不等于物种；测序深度、抽平策略、注释库版本都还没声明。PCA 与箱线图由同一个 rna_figure_create 接口渲染。</p>
 <h3>产物账本</h3>
 <div class="ledger">
-<div><strong>21</strong><span>个产物文件：7 种图 × (PNG + PDF + plot-data.csv)</span></div>
-<div><strong>14</strong><span>项 Review 检查：两个 case 各 7 项，黄灯都写明原因</span></div>
-<div><strong>32</strong><span>条 SHA-256：两份 manifest，输入输出逐条可复核</span></div>
+<div><strong>27</strong><span>个产物文件：9 张图 × (PNG + PDF + plot-data.csv)</span></div>
+<div><strong>21</strong><span>项 Review 检查：三个 case 各 7 项，黄灯都写明原因</span></div>
+<div><strong>42</strong><span>条 SHA-256：三份 manifest，输入输出逐条可复核</span></div>
 </div>
-<p class="caption-note">黄灯是主动写出来的：样本量偏小、引用未读原文、富集与互作含文本挖掘、表达变化不等于功能验证；模拟数据与 padj 的正态近似也在报告第一段就声明。缺什么比多什么更难写，也更值钱。</p>
+<p class="caption-note">黄灯是主动写出来的：样本量偏小、引用未读原文、富集与互作含文本挖掘、相对丰度有组成型约束、表达变化不等于功能验证；模拟数据与 padj 的正态近似也在报告第一段就声明。缺什么比多什么更难写，也更值钱。</p>
 </div></section>
 
 <section id="install"><div class="wrap"><div class="deployment"><div><h2>装进 MiniMax Code，<br>两步就能跑。</h2><p class="section-lead">插件是 Agent Plugins 1.0 的一个目录：plugin.json + 12 个 skills + 3 个 MCP。它不绑定某个客户端，MCP 走 stdio，任何支持 MCP 的宿主都能接。</p>
@@ -208,7 +222,7 @@ Rscript -e 'install.packages(
 <a href="https://github.com/MiniMax-AI/MiniMax-Code-Plugins/tree/main/plugins/Presisitence/bio-research-forge" target="_blank" rel="noopener">社区仓库插件目录 ↗</a>
 </div></div></div></section>
 
-<section id="gallery"><div class="wrap"><div class="gallery-heading"><h2>七张图，两个 case。</h2><small>8 张素材 · 点击图片放大</small></div><p class="section-lead">植物 case 的五个视角（差异表达、样本结构、基因模式、代表基因、功能富集），加上医学 case 的两张：差异表达与代表基因。全部由本机 R 渲染，示例数据（模拟）。</p>
+<section id="gallery"><div class="wrap"><div class="gallery-heading"><h2>九张图，三个 case。</h2><small>10 张素材 · 点击图片放大</small></div><p class="section-lead">植物 case 的五个视角（差异表达、样本结构、基因模式、代表基因、功能富集），医学 case 的差异表达与代表基因，微生物 case 的样本结构与代表属。全部由本机 R 渲染，示例数据（模拟）。</p>
 <div class="gallery">
 <figure><button class="zoom" aria-label="放大案例总览"><img src="assets/overview.png" alt="案例总览：5 张图与账本" loading="lazy"></button><figcaption>总览：5 张图、7 个数据源、15 个产物。</figcaption></figure>
 <figure><button class="zoom" aria-label="放大火山图"><img src="assets/volcano.png" alt="差异表达火山图" loading="lazy"></button><figcaption>火山图：60 个基因的差异表达。</figcaption></figure>
@@ -218,11 +232,14 @@ Rscript -e 'install.packages(
 <figure><button class="zoom" aria-label="放大富集气泡图"><img src="assets/enrichment.png" alt="功能富集气泡图" loading="lazy"></button><figcaption>富集气泡图：春化响应居首。</figcaption></figure>
 <figure><button class="zoom" aria-label="放大医学火山图"><img src="assets/medical-volcano.png" alt="医学差异表达火山图" loading="lazy"></button><figcaption>火山图（医学）：TP53 轴的整体位移。</figcaption></figure>
 <figure><button class="zoom" aria-label="放大医学箱线图"><img src="assets/medical-boxplot.png" alt="医学代表基因箱线图" loading="lazy"></button><figcaption>箱线图（医学）：TP53 / CDKN1A 下移，MKI67 上移。</figcaption></figure>
+<figure><button class="zoom" aria-label="放大微生物 PCA"><img src="assets/micro-pca.png" alt="微生物样本 PCA" loading="lazy"></button><figcaption>PCA（微生物）：12 个样本，PC1 44.6%。</figcaption></figure>
+<figure><button class="zoom" aria-label="放大微生物箱线图"><img src="assets/micro-boxplot.png" alt="微生物代表属丰度箱线图" loading="lazy"></button><figcaption>箱线图（微生物）：3 个代表属的相对丰度（%）。</figcaption></figure>
 </div></div></section>
 
 <section><div class="wrap"><h2>开始之前，你可能想知道。</h2>
-<details open><summary>这些图是真实数据吗？</summary><p>图中的表达表是模拟数据，用来演示完整流程；两个 case 的公共数据查询都是真实执行的，带来源 URL 与检索时间。页面上所有材料都标注「示例数据（模拟）」，没有使用任何未发表研究数据。</p></details>
+<details open><summary>这些图是真实数据吗？</summary><p>图中的表达表是模拟数据，用来演示完整流程；三个 case 的公共数据查询都是真实执行的，带来源 URL 与检索时间。页面上所有材料都标注「示例数据（模拟）」，没有使用任何未发表研究数据。</p></details>
 <details><summary>医学和临床数据也能用吗？</summary><p>能。人的 TP53 和拟南芥的 FLC 走的是同一组白名单接口：UniProt、InterPro、AlphaFold、NCBI、Europe PMC、JASPAR、STRING，换掉的只是查询串和物种编号。临床数据（患者标识、病历、影像）不进入公共查询，本地表也不上传，插件不做标识映射。</p></details>
+<details><summary>微生物组数据也能用吗？</summary><p>能，但走的是“本地表 + 通用出图”的路径：属水平 / OTU 丰度表当矩阵读，PCA、热图、箱线图都能出。白名单里没有专门的微生物组库（没有 Qiime2 / SILVA 接口），注释与差异模型仍要自己跑；插件负责把输入、出图和边界写清楚。</p></details>
 <details><summary>一定要装 R 吗？</summary><p>只有本地出图需要 R 和 jsonlite / ggplot2 / pheatmap / ggrepel 四个包。没装时状态接口会返回缺失清单，公共查询和文本类技能照常可用。</p></details>
 <details><summary>数据会被上传吗？</summary><p>不会。表达矩阵在本机读取、在本机渲染，输出也落在本机目录；插件没有遥测，查询白名单只放行公开数据库域名，任意 URL 和本地文件读取都会被拦截。</p></details>
 <details><summary>能在 MiniMax Code 之外用吗？</summary><p>可以。它是 Agent Plugins 1.0 + MCP 的组合，MCP 通过 stdio 提供服务，不绑定特定客户端；换宿主只需要重新挂载 3 个 MCP 服务。</p></details>
@@ -230,6 +247,6 @@ Rscript -e 'install.packages(
 <div class="actions" style="margin-top:32px"><a class="btn" href="https://github.com/Presisitence/bio-research-forge" target="_blank" rel="noopener">前往开源仓库 ↗</a><a class="btn secondary" href="#">回到顶部 ↑</a></div>
 </div></section>
 </main>
-<footer><div class="wrap footer-row"><span>Bio Research Forge · MiniMax Code 社区插件 · AGPL-3.0-or-later</span><span>示例数据（模拟）· 两个 case（植物 / 医学）· 公共查询 2026-11-09 执行 · 功能以实际安装版本与配置为准</span></div></footer>
+<footer><div class="wrap footer-row"><span>Bio Research Forge · MiniMax Code 社区插件 · AGPL-3.0-or-later</span><span>示例数据（模拟）· 三个 case（植物 / 医学 / 微生物）· 公共查询 2026-11-09 执行 · 功能以实际安装版本与配置为准</span></div></footer>
 <dialog id="viewer"><button aria-label="关闭大图">关闭 ×</button><img alt=""><p></p><div class="close-hint">按 Esc 或点击图片外侧关闭</div></dialog>
 <script>const viewer=document.querySelector('#viewer');document.querySelectorAll('.zoom').forEach(button=>button.addEventListener('click',()=>{const img=button.querySelector('img');viewer.querySelector('img').src=img.src;viewer.querySelector('img').alt=img.alt;viewer.querySelector('p').textContent=img.alt;viewer.showModal()}));viewer.querySelector('button').addEventListener('click',()=>viewer.close());viewer.addEventListener('click',event=>{if(event.target===viewer)viewer.close()});</script></body></html>
